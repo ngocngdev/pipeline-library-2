@@ -2,7 +2,6 @@ package org.springframekwork;
 
 
 def DeployToDev(String project, args) {
-   agent any
     steps.sh 'docker rm -f dev-${project} || true'
     steps.sh 'docker run -p 18888:8080 -d --network=${LDOP_NETWORK_NAME} --name dev-${project} ${args}'
 }
