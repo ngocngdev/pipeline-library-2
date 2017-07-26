@@ -1,4 +1,4 @@
-package org.springframekwork;
+package org.springframekwork
 
 
 def DeployToDev(String project, args) {
