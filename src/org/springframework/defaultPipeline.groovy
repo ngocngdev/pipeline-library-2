@@ -1,4 +1,4 @@
-package org.springframekwork
+package org.springframework
 
 class Utilities implements Serializable {
   def steps
