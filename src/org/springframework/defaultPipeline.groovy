@@ -1,9 +1,12 @@
-package org.springframekwork
+package org.springframekwork;
 
-
-def DeployToDev(String project, args) {
+class Utilities implements Serializable {
+  def steps
+  Utilities(steps) {this.steps = steps}
+  def DeployToDev(String project, String args) {
     steps.sh 'docker rm -f dev-${project} || true'
     steps.sh 'docker run -p 18888:8080 -d --network=${LDOP_NETWORK_NAME} --name dev-${project} ${args}'
+  }
 }
 def SmokeTestDev(String project) {
    agent {
