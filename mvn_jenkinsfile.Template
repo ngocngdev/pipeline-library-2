@@ -4,34 +4,92 @@ library identifier: 'lib@master', retriever: modernSCM(
    remote: 'https://github.com/liatrio/pipeline-library.git')
 
 pipeline {
-  agent none
+  agent any
+  triggers {
+    cron('30 16 * * *')
+  }
+  environment {
+    //Common variables
+    buildType= "maven"
+
+    hipchatRoom = "" //Mandatory field
+    email = ""
+    devEnvironment = ""
+    QAEnvironment = ""
+    stagingEnvironment = ""
+    prodEnvironment = ""
+  }
+  tools {
+    maven 'maven-3.3.9' //label should match Jenkins Global configuration name.
+  }
   stages {
-    stage('Build') {
-      agent {
-        docker {
-          image 'maven:3.5.0'
-        }
-      }
+    stage('Maven build') {
       steps {
-        mvnBuild()
+        Build("${buildType}")
       }
     }
-    stage('Deploy') {
-      agent {
-        docker {
-        }
-      }
+    stage('Unit tests and code analysis') {
       steps {
-        mvnDeploy()
+        runUnitTests("${buildType}")
+        codeQuality()
       }
     }
-    stage('Test') {
-      agent {
-        docker {
-        }
-      }
+    stage('Deploy to dev') {
       steps {
+        Deploy("${buildType}", "${devEnvironment}")
       }
+    }
+    stage('Dev smoke test') {
+      steps {
+        runSmokeTests("${devEnvironment}")
+      }
+    }
+    stage('Deploy to QA') {
+      steps {
+        Deploy("${buildType}", "${QAEnvironment}")
+      }
+    }
+    stage('QA smoke test') {
+      steps {
+        runSmokeTests("${QAEnvironment}")
+        input 'Deploy to staging?'
+      }
+    }
+    stage('Deploy to staging') {
+      steps {
+        Deploy("${buildType}", "${stagingEnvironment}")
+      }
+    }
+    stage('Staging smoke test') {
+      steps {
+        runSmokeTests("${stagingEnvironment}")
+        input 'Deploy to production?'
+      }
+    }
+    stage('Deploy to prod') {
+      steps {
+        Deploy("${buildType}", "${prodEnvironment}")
+      }
+    }
+    stage('Prod smoke test') {
+      steps {
+        runSmokeTests("${prodEnvironment}")
+      }
+    }
+  }
+  post {
+    always {
+      deleteDir()
+    }
+    success {
+      notify([hipchat_room: "${env.hipchatRoom}", //Mandatory
+      email: "${env.email}", //Optional
+      build_status: "SUCCESS" ])
+    }
+    failure {
+      notify([hipchat_room: "${env.hipchatRoom}", //Mandatory
+      email: "${env.email}", //Optional
+      build_status: "FAILED" ])
     }
   }
 }
