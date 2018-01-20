@@ -28,7 +28,7 @@ pipeline {
         /* TODO: Write the functionality for building the maven project.
          * function is at vars/Build.groovy
         */
-        Build("${buildType}")
+        build("${buildType}")
       }
     }
     stage('Unit tests and code analysis') {
@@ -45,7 +45,7 @@ pipeline {
         /* TODO: Write the functionality for deploying the maven app to the passed in environment.
          * function is at vars/Deploy.groovy
         */
-        Deploy("${buildType}", "${devEnvironment}")
+        deploy("${buildType}", "${devEnvironment}")
       }
     }
     stage('Dev smoke test') {
@@ -61,7 +61,7 @@ pipeline {
         /* TODO: Write the functionality for deploying the maven app to the passed in environment.
          * function is at vars/Deploy.groovy
         */
-        Deploy("${buildType}", "${QAEnvironment}")
+        deploy("${buildType}", "${QAEnvironment}")
       }
     }
     stage('QA smoke test') {
@@ -78,7 +78,7 @@ pipeline {
         /* TODO: Write the functionality for deploying the maven app to the passed in environment.
          * function is at vars/Deploy.groovy
         */
-        Deploy("${buildType}", "${stagingEnvironment}")
+        deploy("${buildType}", "${stagingEnvironment}")
       }
     }
     stage('Staging smoke test') {
@@ -95,7 +95,7 @@ pipeline {
         /* TODO: Write the functionality for deploying the maven app to the passed in environment.
          * function is at vars/Deploy.groovy
         */
-        Deploy("${buildType}", "${prodEnvironment}")
+        deploy("${buildType}", "${prodEnvironment}")
       }
     }
     stage('Prod smoke test') {
