@@ -28,7 +28,7 @@ pipeline {
         /* TODO: Write the functionality for building the maven project.
          * function is at vars/Build.groovy
         */
-        build("${buildType}")
+        buildMvn()
       }
     }
     stage('Unit tests and code analysis') {
