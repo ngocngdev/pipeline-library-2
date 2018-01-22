@@ -14,10 +14,6 @@ pipeline {
 
     hipchatRoom = ""  /* Mandatory */
     email = ""
-    devEnvironment = "" /* Mandatory */
-    QAEnvironment = "" /* Mandatory */
-    stagingEnvironment = "" /* Mandatory */
-    prodEnvironment = "" /* Mandatory */
   }
   tools {
     maven 'maven-3.3.9' //label should match Jenkins Global configuration name.
@@ -45,7 +41,8 @@ pipeline {
         /* TODO: Write the functionality for deploying the maven app to the passed in environment.
          * function is at vars/Deploy.groovy
         */
-        deploy("${buildType}", "${devEnvironment}")
+        deploy("${buildType}",
+        [ /* comma separated list of key-value pairs to be used to deploy to an environment*/ ])
       }
     }
     stage('Dev smoke test') {
@@ -61,7 +58,8 @@ pipeline {
         /* TODO: Write the functionality for deploying the maven app to the passed in environment.
          * function is at vars/Deploy.groovy
         */
-        deploy("${buildType}", "${QAEnvironment}")
+        deploy("${buildType}",
+        [ /* comma separated list of key-value pairs to be used to deploy to an environment*/ ])
       }
     }
     stage('QA smoke test') {
@@ -78,7 +76,8 @@ pipeline {
         /* TODO: Write the functionality for deploying the maven app to the passed in environment.
          * function is at vars/Deploy.groovy
         */
-        deploy("${buildType}", "${stagingEnvironment}")
+        deploy("${buildType}",
+        [ /* comma separated list of key-value pairs to be used to deploy to an environment*/ ])
       }
     }
     stage('Staging smoke test') {
@@ -95,7 +94,8 @@ pipeline {
         /* TODO: Write the functionality for deploying the maven app to the passed in environment.
          * function is at vars/Deploy.groovy
         */
-        deploy("${buildType}", "${prodEnvironment}")
+        deploy("${buildType}",
+        [ /* comma separated list of key-value pairs to be used to deploy to an environment*/ ])
       }
     }
     stage('Prod smoke test') {

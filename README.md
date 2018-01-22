@@ -1,7 +1,7 @@
 # pipeline-library
 This repository serves as a location for a starting point for Jenkins pipelines and shared libraries. There is a pipeline template for a Maven application and a Nodejs application.
 
-NOTE: Typically, pipelines and shared libraries are stored separately in source control. 
+*NOTE*: Typically, pipelines and shared libraries are stored separately in source control. 
 
 ## Jenkinsfiles and Pipelines
 
