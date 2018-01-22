@@ -8,7 +8,7 @@ def call(String buildType) {
   if (buildType == "maven"){
 
   }
-  else if (buildType == "npm"){
+  else if (buildType == "nodejs"){
 
   }
 
